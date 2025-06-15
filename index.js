@@ -51,7 +51,7 @@ app.post('/send-email', upload.single('csv'), async (req, res) => {
    
     return res.status(500).json({
       success: false,
-      message: 'Failed to send email. Please check your internet connection.',
+      message: 'Failed to send email. Please try again.',
       error: error.message,
     });
   }
@@ -81,7 +81,7 @@ app.post('/send-email', upload.single('csv'), async (req, res) => {
 
         return res.status(500).json({
           success: false,
-          message: `Failed to send email. Please check your internet connection.`,
+          message: `Failed to send email. Please try again.`,
           error: emailError.message,
         });
 
