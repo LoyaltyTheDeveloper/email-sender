@@ -1,0 +1,14 @@
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+
+# CSV uploads (you don’t want to commit email lists)
+uploads/
+
+# Logs and system files
+*.log
+.DS_Store
+Thumbs.db
+#

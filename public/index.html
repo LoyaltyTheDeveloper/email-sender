@@ -1,0 +1,127 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Email Sender</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+
+     <div id="loader" class="hidden fixed inset-0 bg- white/80 flex items-center justify-center z-50">
+    <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-600 border-solid"></div>
+  </div>
+
+  <div class="bg-white shadow-lg rounded-xl w-full max-w-md p-6 space-y-6">
+    <h1 class="text-2xl font-bold text-gray-800 text-center">📧 Email Sender</h1>
+
+    <form id="emailForm" class="space-y-4">
+     
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Subject</label>
+        <input type="text" name="subject" required
+          class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+      </div>
+
+     
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Message</label>
+        <textarea name="message" rows="4" required
+          class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm resize-none focus:outline-none focus:ring-blue-500 focus:border-blue-500"></textarea>
+      </div>
+
+     
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Mode</label>
+        <select id="mode" name="mode"
+          class="mt-1 w-full cursor-pointer px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+          <option value="single">Single Email</option>
+          <option value="bulk">Bulk from CSV</option>
+        </select>
+      </div>
+
+     
+      <div id="singleMode">
+        <label class="block text-sm font-medium text-gray-700">Recipient Email</label>
+        <input type="email" name="toEmail"
+          class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+      </div>
+
+   
+      <div id="bulkMode" class="hidden">
+        <label class="block text-sm font-medium text-gray-700">Upload CSV</label>
+        <input type="file" name="csv" accept=".csv"
+          class="mt-1 w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
+      </div>
+
+   
+      <div>
+        <button type="submit"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md transition duration-200">
+          Send Email
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('emailForm');
+    const modeSelect = document.getElementById('mode');
+    const singleMode = document.getElementById('singleMode');
+    const bulkMode = document.getElementById('bulkMode');
+    const loader = document.getElementById('loader');
+
+    modeSelect.addEventListener('change', () => {
+      if (modeSelect.value === 'single') {
+        singleMode.classList.remove('hidden');
+        bulkMode.classList.add('hidden');
+      } else {
+        singleMode.classList.add('hidden');
+        bulkMode.classList.remove('hidden');
+      }
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      loader.classList.remove('hidden'); 
+
+      const formData = new FormData(form);
+
+      try {
+        const response = await fetch('/send-email', {
+          method: 'POST',
+          body: formData,
+        });
+
+        const result = await response.json();
+        loader.classList.add('hidden');
+
+        if (result.success === true) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: result.message,
+          });
+          form.reset();
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: result.message,
+          });
+        }
+      } catch (err) {
+        loader.classList.add('hidden');
+        Swal.fire({
+          icon: 'error',
+          title: 'Network Error',
+          text: err.message,
+        });
+      }
+    });
+  </script>
+
+
+</body>
+
