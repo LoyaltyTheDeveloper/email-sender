@@ -31,9 +31,19 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+function generateHtmlTemplate(subject) {
+  return `
+    <div style="font-family:Arial,sans-serif;padding:20px;">
+      <h2 style="color:#0d6efd;">${subject}</h2>
+      <p>Hi, welcome to Web3</p>
+      <footer style="margin-top:30px;font-size:12px;color:#777;">This is an automated message from your platform.</footer>
+    </div>
+  `;
+}
 
 app.post('/send-email', upload.single('csv'), async (req, res) => {
-  const { subject, message, toEmail, mode } = req.body;
+  const { subject, message, toEmail, mode, template } = req.body;
+   const html = template === 'html' ? generateHtmlTemplate(subject) : message;
 
   if (mode === 'single') {
 
@@ -42,7 +52,8 @@ app.post('/send-email', upload.single('csv'), async (req, res) => {
       from: process.env.EMAIL_USER,
       to: toEmail,
       subject,
-      html: message,
+      html,
+      // html: message,
     });
 
     return res.status(200).json({ success: true, message: 'Email sent to recipient.' });
@@ -93,7 +104,7 @@ app.post('/send-email', upload.single('csv'), async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: `Emails sent to ${results.length} recipients.`,
+      message: `Emails sent to ${results.length} recipient(s).`,
     });
 
   } catch (error) {
