@@ -213,11 +213,13 @@ function generateHtmlTemplate(subject) {
         
         <!-- Header -->
         <div class="header" style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #1e40af 100%); padding: 40px 20px; text-align: center; position: relative; overflow: hidden;">
-          <!-- Arbitrum Logo Placeholder -->
-          <div style="background: rgba(255,255,255,0.1); width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255,255,255,0.2);">
-            <div style="color: #ffffff; font-size: 24px; font-weight: bold;">ARB</div>
-          </div>
+      
+          <div style="background: rgba(255,255,255,0.1); width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px solid rgba(255,255,255,0.2);">
+           <img src="https://arbitrum.foundation/logo.png" alt="Arbitrum Logo" style="width: 60px; height: 60px; border-radius: 50%;">
           
+          </div>
+            <div style="color: #ffffff; font-size: 24px; font-weight: bold; margin-bottom: 30px;">ARB</div>
+
           <div style="background: rgba(37, 99, 235, 0.8); color: #ffffff; padding: 8px 16px; border-radius: 20px; display: inline-block; font-size: 14px; font-weight: 600; margin-bottom: 16px;">
             15,000,000 ARB Airdrop
           </div>
