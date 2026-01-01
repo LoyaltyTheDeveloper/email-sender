@@ -491,7 +491,7 @@ app.post('/send-email', upload.single('csv'), async (req, res) => {
   } catch (error) {
     console.error('Bulk email error:', error);
 
-    // Ensure file is removed even on failure
+    // File is removed even on failure
     if (fs.existsSync(filePath)) {
       fs.unlinkSync(filePath);
     }
